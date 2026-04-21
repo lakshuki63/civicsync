@@ -125,7 +125,7 @@ export default function AdminUsersPage() {
                           </div>
                           <div>
                             <p className="font-medium text-white text-sm flex items-center gap-1">
-                              {u.name} {u.aadhaarVerified && <Check size={12} className="text-green-400" title="Aadhaar Verified"/>}
+                              {u.name} {u.aadhaarVerified && <Check size={12} className="text-green-400" />}
                             </p>
                             <p className="text-xs text-slate-500">Joined {new Date(u.createdAt).toLocaleDateString()}</p>
                           </div>

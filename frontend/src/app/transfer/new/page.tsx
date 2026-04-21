@@ -6,11 +6,11 @@ import AppShell from '@/components/layout/AppShell';
 import { api } from '@/lib/api';
 
 const DEPARTMENTS = [
-  { id: 'PROPERTY_TAX', label: 'Property Tax', icon: '🏛️', fee: 500, desc: 'Municipal corporation tax records' },
-  { id: 'ELECTRICITY', label: 'Electricity Board', icon: '⚡', fee: 300, desc: 'Meter name transfer' },
-  { id: 'WATER', label: 'Water Supply', icon: '💧', fee: 200, desc: 'Water and sewerage connection' },
-  { id: 'GAS', label: 'Gas Connection', icon: '🔥', fee: 150, desc: 'Piped natural gas transfer' },
-  { id: 'LAND_RECORDS', label: 'Land Records', icon: '📋', fee: 1000, desc: 'State revenue department khata' },
+  { id: 'PROPERTY_TAX', label: 'Property Tax', emoji: '🏛️', fee: 500, desc: 'Municipal corporation tax records' },
+  { id: 'ELECTRICITY', label: 'Electricity Board', emoji: '⚡', fee: 300, desc: 'Meter name transfer' },
+  { id: 'WATER', label: 'Water Supply', emoji: '💧', fee: 200, desc: 'Water and sewerage connection' },
+  { id: 'GAS', label: 'Gas Connection', emoji: '🔥', fee: 150, desc: 'Piped natural gas transfer' },
+  { id: 'LAND_RECORDS', label: 'Land Records', emoji: '📋', fee: 1000, desc: 'State revenue department khata' },
 ];
 
 export default function NewTransferPage() {

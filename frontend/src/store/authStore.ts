@@ -1,9 +1,27 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export const useAuthStore = create(
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  department?: string;
+  aadhaarVerified?: boolean;
+}
+
+interface AuthState {
+  user: User | null;
+  token: string | null;
+  isAuthenticated: boolean;
+  setAuth: (user: User, token: string) => void;
+  logout: () => void;
+  updateUser: (data: Partial<User>) => void;
+}
+
+export const useAuthStore = create<AuthState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       user: null,
       token: null,
       isAuthenticated: false,
@@ -15,11 +33,17 @@ export const useAuthStore = create(
         if (typeof window !== 'undefined') window.location.href = '/login';
       },
 
-      updateUser: (data) => set((state) => ({ user: { ...state.user, ...data } })),
+      updateUser: (data) => set((state) => ({ 
+        user: state.user ? { ...state.user, ...data } : null 
+      })),
     }),
     {
       name: 'civicsync-auth',
-      partialize: (state) => ({ user: state.user, token: state.token, isAuthenticated: state.isAuthenticated }),
+      partialize: (state) => ({ 
+        user: state.user, 
+        token: state.token, 
+        isAuthenticated: state.isAuthenticated 
+      }),
     }
   )
 );
