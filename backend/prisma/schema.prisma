@@ -1,0 +1,204 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CITIZEN
+  OFFICER
+  ADMIN
+}
+
+enum Department {
+  PROPERTY_TAX
+  ELECTRICITY
+  WATER
+  GAS
+  LAND_RECORDS
+}
+
+enum TransferStatus {
+  DRAFT
+  SUBMITTED
+  IN_REVIEW
+  PAYMENT_PENDING
+  PAYMENT_DONE
+  APPROVED
+  REJECTED
+}
+
+enum DeptStatus {
+  PENDING
+  IN_REVIEW
+  APPROVED
+  REJECTED
+}
+
+enum DocumentType {
+  SALE_DEED
+  ID_PROOF
+  ADDRESS_PROOF
+  PROPERTY_CARD
+  NO_OBJECTION_CERTIFICATE
+  UTILITY_BILL
+  OTHER
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+model User {
+  id             String   @id @default(uuid())
+  name           String
+  email          String   @unique
+  phone          String   @unique
+  passwordHash   String
+  aadhaarLast4   String?
+  aadhaarVerified Boolean @default(false)
+  role           Role     @default(CITIZEN)
+  department     Department?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  transfers      TransferRequest[] @relation("CitizenTransfers")
+  officerActions DepartmentStatus[] @relation("OfficerActions")
+  auditLogs      AuditLog[]
+  notifications  Notification[]
+  otps           OtpVerification[]
+}
+
+model Property {
+  id                 String   @id @default(uuid())
+  registrationNumber String   @unique
+  plotNumber         String?
+  surveyNumber       String?
+  address            String
+  district           String
+  state              String
+  area               Float?
+  previousOwnerName  String
+  previousOwnerPhone String?
+  createdAt          DateTime @default(now())
+
+  transfers TransferRequest[]
+}
+
+model TransferRequest {
+  id             String         @id @default(uuid())
+  referenceId    String         @unique @default(uuid())
+  propertyId     String
+  citizenId      String
+  status         TransferStatus @default(DRAFT)
+  currentStep    Int            @default(1)
+  totalFee       Float          @default(0)
+  remarks        String?
+  submittedAt    DateTime?
+  completedAt    DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  property           Property           @relation(fields: [propertyId], references: [id])
+  citizen            User               @relation("CitizenTransfers", fields: [citizenId], references: [id])
+  departmentStatuses DepartmentStatus[]
+  documents          Document[]
+  payments           Payment[]
+  auditLogs          AuditLog[]
+}
+
+model DepartmentStatus {
+  id         String     @id @default(uuid())
+  requestId  String
+  department Department
+  status     DeptStatus @default(PENDING)
+  officerId  String?
+  remarks    String?
+  reviewedAt DateTime?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  request TransferRequest @relation(fields: [requestId], references: [id])
+  officer User?           @relation("OfficerActions", fields: [officerId], references: [id])
+
+  @@unique([requestId, department])
+}
+
+model Document {
+  id         String       @id @default(uuid())
+  requestId  String
+  type       DocumentType
+  fileName   String
+  fileUrl    String
+  fileSize   Int
+  mimeType   String
+  verified   Boolean      @default(false)
+  uploadedAt DateTime     @default(now())
+
+  request TransferRequest @relation(fields: [requestId], references: [id])
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  requestId     String
+  amount        Float
+  status        PaymentStatus @default(PENDING)
+  gatewayRef    String?
+  gatewayOrder  String?
+  method        String?
+  paidAt        DateTime?
+  createdAt     DateTime      @default(now())
+
+  request TransferRequest @relation(fields: [requestId], references: [id])
+}
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  userId      String
+  action      String
+  entityType  String
+  entityId    String?
+  metadata    Json?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+
+  user    User             @relation(fields: [userId], references: [id])
+  request TransferRequest? @relation(fields: [entityId], references: [id])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  message   String
+  type      String   @default("INFO")
+  read      Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model OtpVerification {
+  id        String   @id @default(uuid())
+  userId    String?
+  phone     String
+  otp       String
+  purpose   String
+  verified  Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+}
