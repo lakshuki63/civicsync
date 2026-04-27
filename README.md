@@ -25,7 +25,7 @@ CivicSync is a comprehensive GovTech platform designed to digitize and unify pos
 * **Authentication**: JWT with Role-Based Access Control (Citizen, Officer, Admin).
 * **Storage**: Cloudinary (for uploaded documents).
 
-## 🛠️ Quick Start (Docker)
+## Quick Start (Docker)
 
 The fastest way to run the entire stack locally is using Docker Compose.
 
@@ -49,7 +49,7 @@ The fastest way to run the entire stack locally is using Docker Compose.
 | Officer (Tax) | `officer.property_tax@civicsync.gov.in` | `Officer@123` |
 | System Admin | `admin@civicsync.gov.in` | `Admin@123` |
 
-## 💻 Manual Setup
+##  Manual Setup
 
 If you prefer to run the services individually without Docker:
 
@@ -71,7 +71,7 @@ npm install
 npm run dev
 ```
 
-## 🧪 Testing
+##  Testing
 
 ### Backend Unit Tests
 ```bash
