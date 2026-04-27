@@ -1,8 +1,8 @@
-# CivicSync — Unified Property Transfer Platform 🏛️
+# CivicSync — Unified Property Transfer Platform 
 
 CivicSync is a comprehensive GovTech platform designed to digitize and unify post-property-purchase ownership transfer processes in India. It eliminates manual, fragmented workflows by integrating Municipal, Electricity, Water, Gas, and Land Records departments into a single digital dashboard.
 
-## 🚀 Features
+##  Features
 
 ### For Citizens
 * **Unified Application**: Apply for ownership transfer across 5 departments simultaneously.
@@ -17,7 +17,7 @@ CivicSync is a comprehensive GovTech platform designed to digitize and unify pos
 * **Audit Logs**: Immutable system-wide logging for fraud prevention.
 * **Metrics Dashboard**: Track platform health, revenue, and processing times.
 
-## 🏗️ Architecture
+##  Architecture
 
 * **Frontend**: Next.js 14 (App Router), Tailwind CSS, Zustand, Lucide Icons.
 * **Backend**: Node.js, Express.js, Prisma ORM.
@@ -41,7 +41,7 @@ The fastest way to run the entire stack locally is using Docker Compose.
 
 *Note: The Docker setup automatically runs database migrations and seeds the database with demo accounts.*
 
-## 📋 Demo Credentials
+##  Demo Credentials
 
 | Role | Email | Password |
 |------|-------|----------|
@@ -85,9 +85,6 @@ cd cypress
 npm install
 npx cypress open
 ```
-
-## 📄 License
-This project is licensed under the MIT License.
 
 
 made by -
